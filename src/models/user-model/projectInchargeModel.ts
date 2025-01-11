@@ -53,7 +53,7 @@ ProjectIncharge.init(
   {
     sequelize,
     modelName: "ProjectIncharge",
-    tableName: "projectIncharge",
+    tableName: "projectincharge",
     timestamps: true,
   }
 );

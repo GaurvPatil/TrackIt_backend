@@ -48,7 +48,7 @@ SuperAdmin.init(
   {
     sequelize,
     modelName: "SuperAdmin",
-    tableName: "superAdmin",
+    tableName: "superadmin",
     timestamps: true,
   }
 );
