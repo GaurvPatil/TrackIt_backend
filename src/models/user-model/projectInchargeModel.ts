@@ -11,6 +11,8 @@ export default class ProjectIncharge extends Model {
   public group_id: number | null = null;
   public createdByRole!: string;
   public createdById!: number;
+  public firstName : string | null = null;
+  public lastName : string | null = null;
 }
 
 ProjectIncharge.init(
@@ -20,14 +22,18 @@ ProjectIncharge.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,

@@ -10,6 +10,8 @@ export default class Admin extends Model {
   public department_id!: number;
   public createdByRole!: string;
   public createdById!: number;
+  public firstName : string | null = null;
+  public lastName : string | null = null;
 }
 
 Admin.init(
@@ -19,14 +21,18 @@ Admin.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,

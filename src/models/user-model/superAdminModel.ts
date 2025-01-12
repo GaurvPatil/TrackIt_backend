@@ -9,6 +9,8 @@ export default class SuperAdmin extends Model {
   public role!: string;
   public createdByRole!: string;
   public createdById!: number;
+  public firstName : string | null = null;
+  public lastName : string | null = null;
 }
 
 SuperAdmin.init(
@@ -18,7 +20,11 @@ SuperAdmin.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
