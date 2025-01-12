@@ -3,7 +3,8 @@ import Joi from "joi";
 export const userValidatorsSchema = Joi.object({
 
   // COMMON FO ALL USERS 
-  name: Joi.string().min(3).max(80).required(),
+  firstName: Joi.string().min(3).max(80),
+  lastName: Joi.string().min(3).max(80),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required(),
   createdByRole : Joi.string().required(),
@@ -12,7 +13,7 @@ export const userValidatorsSchema = Joi.object({
     .valid("superadmin", "admin", "projectincharge", "student")
     .required(),
 
-// EXTRA FIELDS CORRESPONDING TO ROLE
+  // EXTRA FIELDS CORRESPONDING TO ROLE
   department_id: Joi.when("role", {
     is: Joi.string().valid("admin", "projectincharge" , "student"),
     then: Joi.number().required(),

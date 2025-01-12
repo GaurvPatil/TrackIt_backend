@@ -18,8 +18,8 @@ export default class Students extends Model {
 Students.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID, // Use PostgreSQL's UUID type
+      defaultValue: DataTypes.UUIDV4, // Sequelize generates UUID v4
       primaryKey: true,
     },
     email: {

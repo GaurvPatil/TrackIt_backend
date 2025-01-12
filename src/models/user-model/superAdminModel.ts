@@ -9,15 +9,15 @@ export default class SuperAdmin extends Model {
   public role!: string;
   public createdByRole!: string;
   public createdById!: number;
-  public firstName : string | null = null;
-  public lastName : string | null = null;
+  public firstName: string | null = null;
+  public lastName: string | null = null;
 }
 
 SuperAdmin.init(
   {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID, // Use PostgreSQL's UUID type
+      defaultValue: DataTypes.UUIDV4, // Sequelize generates UUID v4
       primaryKey: true,
     },
     firstName: {

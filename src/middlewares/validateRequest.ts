@@ -13,7 +13,7 @@ export const validateRequest = (schema: ObjectSchema) => {
       res.status(400).json({
         success: false,
         message: "Validation error",
-        errors: error.details.map((err) => err.message),
+        errors: error.details.map((err) => err.message.replace(/['"]/g, "")),
         data : null
       });
     } else {
