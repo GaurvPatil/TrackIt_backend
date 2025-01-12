@@ -11,8 +11,8 @@ export default class Students extends Model {
   public department_id: number | null = null;
   public createdByRole!: string;
   public createdById!: number;
-  public firstName : string | null = null;
-  public lastName : string | null = null;
+  public firstName!: string;
+  public lastName!: string;
 }
 
 Students.init(

@@ -10,8 +10,8 @@ export default class Admin extends Model {
   public department_id!: number;
   public createdByRole!: string;
   public createdById!: number;
-  public firstName : string | null = null;
-  public lastName : string | null = null;
+  public firstName!: string;
+  public lastName!: string;
 }
 
 Admin.init(

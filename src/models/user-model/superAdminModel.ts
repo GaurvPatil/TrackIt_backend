@@ -9,8 +9,8 @@ export default class SuperAdmin extends Model {
   public role!: string;
   public createdByRole!: string;
   public createdById!: number;
-  public firstName: string | null = null;
-  public lastName: string | null = null;
+  public firstName!: string;
+  public lastName!: string;
 }
 
 SuperAdmin.init(
@@ -46,7 +46,7 @@ SuperAdmin.init(
       allowNull: false,
     },
     createdById: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID, // Use PostgreSQL's UUID type
       allowNull: false,
     },
   },

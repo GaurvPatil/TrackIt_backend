@@ -10,7 +10,8 @@ export const createUserController = async (
 ): Promise<void> => {
   try {
     const {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       role,
@@ -24,7 +25,8 @@ export const createUserController = async (
     switch (role) {
       case "superadmin":
         newUser = await SuperAdmin.create({
-          name,
+          firstName,
+          lastName,
           email,
           password,
           role,
@@ -35,7 +37,8 @@ export const createUserController = async (
 
       case "admin":
         newUser = await Admin.create({
-          name,
+          firstName,
+          lastName,
           email,
           password,
           role,
@@ -47,7 +50,8 @@ export const createUserController = async (
 
       case "projectincharge":
         newUser = await ProjectIncharge.create({
-          name,
+          firstName,
+          lastName,
           email,
           password,
           role,
@@ -59,7 +63,8 @@ export const createUserController = async (
 
       case "student":
         newUser = await Students.create({
-          name,
+          firstName,
+          lastName,
           email,
           password,
           role,
