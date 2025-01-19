@@ -1,42 +1,48 @@
 import express, { Request, Response } from "express";
+import dotenv from "dotenv";
 import { connectDB, sequelize } from "./database-connection/databaseConnection";
 import rootRouter from "./compileRoutes";
-import dotenv from "dotenv";
+import { checkDBConnection } from "./middlewares/error-handeling/checkDBConnection";
+import { monitorDBConnection } from "./middlewares/error-handeling/monitorDBConnection";
 dotenv.config();
 
-// create express application
+// Create Express application
 const app = express();
 
-// Global middlewares
+// Initialize global middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 if (process.env.NODE_ENV === "development") {
   const morgan = require("morgan");
   app.use(morgan("dev"));
 }
 
-// Connect to the database and start the server
-connectDB().then(() => {
-  syncDatabse(); // Synchronize database
-  const PORT = process.env.PORT as string;
-  // Start the server after successful database connection
-  app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-  });
-
-  app.get("/", (req: Request, res: Response) => {
-    res.send("API is running...");
-  });
-  app.use("/api", rootRouter);
-});
-
-// Function to synchronize database
-// Ensures all tables defined in your models exist in the database.
-async function syncDatabse() {
+// Function to start the server
+const startServer = async () => {
   try {
-    await sequelize.sync({ force: false }); // Use `force: true` only during development (drops and recreates tables)
-  } catch (err) {
-    console.log("failed to synchronize database:", err);
-    process.exit(1); // Exit process if synchronization fails
+    // Connect to the database
+    await connectDB();
+    await monitorDBConnection();
+
+    const PORT = process.env.PORT || 5000;
+    // Start the server
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
+    });
+
+    // Test route
+    app.get("/", (req: Request, res: Response) => {
+      res.send("API is running...");
+    });
+
+    // Mount routes
+    app.use("/api", checkDBConnection, rootRouter);
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+    process.exit(1); // Exit process if something goes wrong
   }
-}
+};
+
+// Start the server
+startServer();

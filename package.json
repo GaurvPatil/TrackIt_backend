@@ -4,7 +4,7 @@
   "main": "/src/server.ts",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"tsc --watch\" \"nodemon dist/server.js\""
+    "start": "concurrently \"tsc --watch\" \"wait-on dist dist/server.js && nodemon --watch dist dist/server.js\""
   },
   "dependencies": {
     "apollo-server-express": "^3.13.0",
@@ -24,9 +24,13 @@
     "concurrently": "^9.1.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.9",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "wait-on": "^8.0.2"
   },
   "resolutions": {
-    "@types/express": "^5.0.0"
+    "@types/express": "^5.0.0",
+    "@types/graphql": "^14.5.0",
+    "@types/joi": "^17.2.3",
+    "graphql": "^16.10.0"
   }
 }
