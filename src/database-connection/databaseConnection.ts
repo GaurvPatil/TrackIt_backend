@@ -25,23 +25,19 @@ const circuiteBreakerStates = dbCircuitBreaker.getState();
 let isConnecting = false;
 
 const connectDB = async (retryCount = 0) => {
-  let isTryingToReconnectCount = retryCount;
+  let tryingToReconnectCount = retryCount;
   // Prevent overlapping calls unless it's an internal retry
-  if (isConnecting && isTryingToReconnectCount === 0) {
-    console.log(
-      "A database connection attempt is already in progress. Skipping..."
-    );
+  if (isConnecting && tryingToReconnectCount === 0) {
+    console.log("A DBConnection  attempt is already in progress. Skipping...");
     return;
   }
 
   try {
     isConnecting = true; // Set lock for external calls
-    isTryingToReconnectCount += 1; // Increment retry count
+    tryingToReconnectCount += 1; // Increment retry count
     // Check if the circuit breaker allows attempts
     if (!dbCircuitBreaker.shouldAttemptConnection()) {
-      console.log(
-        "Circuit breaker is OPEN. Skipping database connection attempt."
-      );
+      console.log("Circuit breaker is OPEN. Skipping DBConnection attempt.");
       return;
     }
 
@@ -61,7 +57,7 @@ const connectDB = async (retryCount = 0) => {
     // Check if the circuit breaker is now OPEN
     if (circuiteBreakerStates.state === "OPEN") {
       console.log(
-        "Circuit breaker is now OPEN. Retry will happen after:" +
+        "DBConnection Circuit breaker is now OPEN. Retry will happen after:" +
           circuiteBreakerStates.timeout +
           "ms"
       );
@@ -69,7 +65,7 @@ const connectDB = async (retryCount = 0) => {
       // Stop retries after exceeding the maximum failure threshold
       if (circuiteBreakerStates.failures >= circuiteBreakerStates.threshold) {
         console.log(
-          "Max retry limit reached. Stopping retries and resetting circuit breaker."
+          "Max retry limit reached. Stopping retries and resetting DBConnection circuit breaker."
         );
         dbCircuitBreaker.handleSuccess(); // Reset circuit breaker to CLOSED to avoid further retries
         isConnecting = false; // Release lock
@@ -78,9 +74,11 @@ const connectDB = async (retryCount = 0) => {
 
       // Schedule a retry after the timeout period
       setTimeout(async () => {
-        await connectDB(isTryingToReconnectCount); // Retry connecting to the database
+        await connectDB(tryingToReconnectCount); // Retry connecting to the database
       }, circuiteBreakerStates.timeout);
     }
+  } finally {
+    isConnecting = false; // Release lock
   }
 };
 
