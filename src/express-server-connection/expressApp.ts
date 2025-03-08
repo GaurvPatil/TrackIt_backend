@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import { CircuitBreaker } from "../middlewares/error-handeling/circuitBreaker";
 import { checkDBConnection } from "../middlewares/checkDBConnection";
-import rootRouters from "../compileRoutes";
+import rootRouters from "./compileRoutes";
 import { API_URL } from "../utils/constants/constants";
+import { Express } from "express";
 
 dotenv.config();
 
@@ -15,12 +16,14 @@ const serverCircuitBreaker = new CircuitBreaker(threshold, timeout);
 const serverCircuitBresakerStates = serverCircuitBreaker.getState();
 let isConnecting = false;
 
-const expressApp = async (retryCount = 0) => {
+const expressApp = async (app: Express, retryCount = 0): Promise<void> => {
   let tryingToReconnectCount = retryCount;
   // Prevent overlapping calls unless it's an internal retry
 
   if (isConnecting && tryingToReconnectCount === 0) {
-    console.log("A DBConnection  attempt is already in progress. Skipping...");
+    console.log(
+      "A server connection  attempt is already in progress. Skipping..."
+    );
     return;
   }
 
@@ -34,8 +37,6 @@ const expressApp = async (retryCount = 0) => {
       return;
     }
 
-    // Attempt to create the server
-    const app = express();
     // Initialize global middlewares
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -56,7 +57,7 @@ const expressApp = async (retryCount = 0) => {
     });
 
     // Mount routes
-    app.use("/api", checkDBConnection, rootRouters);
+    app.use("/rest", checkDBConnection, rootRouters);
     console.log("Connected to server successfully.");
     serverCircuitBreaker.handleSuccess(); // Reset the circuit breaker on success
     isConnecting = false; // Release lock
@@ -67,7 +68,7 @@ const expressApp = async (retryCount = 0) => {
     );
     if (serverCircuitBresakerStates.state === "OPEN") {
       console.log(
-        "DBConnection Circuit breaker is now OPEN. Retry will happen after:" +
+        "server connection Circuit breaker is now OPEN. Retry will happen after:" +
           serverCircuitBresakerStates.timeout +
           "ms"
       );
@@ -77,7 +78,7 @@ const expressApp = async (retryCount = 0) => {
         serverCircuitBresakerStates.threshold
       ) {
         console.log(
-          "Max retry limit reached. Stopping retries and resetting DBConnection circuit breaker."
+          "Max retry limit reached. Stopping retries and resetting server connection circuit breaker."
         );
         serverCircuitBreaker.handleSuccess();
         isConnecting = false; // Release lock
@@ -86,7 +87,7 @@ const expressApp = async (retryCount = 0) => {
     }
     // Schedule a retry after the timeout period
     setTimeout(async () => {
-      await expressApp(tryingToReconnectCount); // Retry connecting to the database
+      await expressApp(app, tryingToReconnectCount); // Retry connecting to the database
     }, serverCircuitBresakerStates.timeout);
   } finally {
     isConnecting = false; // Release lock

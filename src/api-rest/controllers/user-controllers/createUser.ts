@@ -18,6 +18,8 @@ export const createUserController = async (
       department_id,
       createdByRole,
       createdById,
+      updatedByRole,
+      updatedById,
     } = req.body;
 
     let newUser = null;
@@ -32,6 +34,8 @@ export const createUserController = async (
           role,
           createdByRole,
           createdById,
+          updatedByRole,
+          updatedById,
         });
         break;
 
@@ -45,6 +49,8 @@ export const createUserController = async (
           department_id,
           createdByRole,
           createdById,
+          updatedByRole,
+          updatedById,
         });
         break;
 
@@ -58,6 +64,8 @@ export const createUserController = async (
           department_id,
           createdByRole,
           createdById,
+          updatedByRole,
+          updatedById,
         });
         break;
 
@@ -71,6 +79,8 @@ export const createUserController = async (
           department_id,
           createdByRole,
           createdById,
+          updatedByRole,
+          updatedById,
         });
         break;
 

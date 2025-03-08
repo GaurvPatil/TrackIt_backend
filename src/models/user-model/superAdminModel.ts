@@ -49,6 +49,14 @@ SuperAdmin.init(
       type: DataTypes.UUID, // Use PostgreSQL's UUID type
       allowNull: false,
     },
+    updatedByRole: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    updatedById: {
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
   },
 
   {

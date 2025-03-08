@@ -44,7 +44,7 @@ ProjectIncharge.init(
       allowNull: false,
     },
     department_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false,
     },
     createdByRole: {
@@ -52,7 +52,15 @@ ProjectIncharge.init(
       allowNull: false,
     },
     createdById: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
+      allowNull: false,
+    },
+    updatedByRole: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    updatedById: {
+      type: DataTypes.UUID,
       allowNull: false,
     },
   },
