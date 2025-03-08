@@ -1,18 +1,16 @@
-interface serverHealthResponse {
-  message: string;
-  status: string;
-  statusCode: number;
-  
-}
+import {
+  SuccessHandler,
+  SuccessResponse,
+} from "../../../utils/helper/responseHandeling";
 
 const graphqlMonitoringResolver = {
-  getServerStatusResponse: async (): Promise<serverHealthResponse> => {
-    return {
-      message: "GraphQL Server is running smoothly",
-      status: "OK",
-      statusCode: 200,
-     
-    }; // Just a simple response for monitoring
+  getServerStatusResponse: async (): Promise<SuccessResponse> => {
+    return SuccessHandler.standardSuccessHandler(
+      200,
+      "Ok",
+      "GraphQL Server is running smoothly.",
+      null
+    );
   },
 };
 

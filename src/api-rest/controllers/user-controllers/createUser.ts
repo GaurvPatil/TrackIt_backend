@@ -3,6 +3,10 @@ import Students from "../../../models/user-model/studentsModel";
 import SuperAdmin from "../../../models/user-model/superAdminModel";
 import ProjectIncharge from "../../../models/user-model/projectInchargeModel";
 import Admin from "../../../models/user-model/adminModel";
+import {
+  ErrorHandler,
+  SuccessHandler,
+} from "../../../utils/helper/responseHandeling";
 
 export const createUserController = async (
   req: Request,
@@ -85,24 +89,31 @@ export const createUserController = async (
         break;
 
       default:
-        res.status(400).json({
-          status: false,
-          message: "Invalid role",
-          data: null,
-        });
+        ErrorHandler.restApiErrorHandler(
+          res,
+          400,
+          "error",
+          "Invalid role",
+          null
+        );
     }
 
-    res.status(201).json({
-      status: true,
-      message: "User created successfully",
-      data: newUser,
-    });
+    SuccessHandler.restApiSuccessHandler(
+      res,
+      201,
+      "Ok",
+      " User created successfully",
+      newUser
+    );
   } catch (err) {
     console.error("Error creating user:", err);
-    res.status(500).json({
-      status: false,
-      message: "Internal server error",
-      data: null,
-    });
+    ErrorHandler.restApiErrorHandler(
+      res,
+      500,
+      "error",
+      "Internal server error",
+      null,
+      err 
+    );
   }
 };
