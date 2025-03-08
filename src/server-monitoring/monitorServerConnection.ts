@@ -17,16 +17,16 @@ const monitorServer = async (app: Express) => {
 
       const restAPiresponse = await fetch(`${API_URL}/health`);
       if (restAPiresponse.status !== 200) {
-        throw new Error("Server health check failed.");
+        throw new Error(" Express Server health check failed.");
       }
-      console.log("Server is healthy.");
+      console.log(" Express Server is healthy.");
    
     } catch (error) {
-      console.error("Server health check failed. Restarting server...", error);
+      console.error(" Express Server health check failed. Restarting server...", error);
       try {
         await expressApp(app); // Restart server
       } catch (restartError) {
-        console.error("Failed to restart the server:", restartError);
+        console.error("Failed to connect to Express Server  after maximum retry attempts:", restartError);
       }
     }
   }, interval);

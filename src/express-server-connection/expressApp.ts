@@ -48,12 +48,12 @@ const expressApp = async (app: Express, retryCount = 0): Promise<void> => {
     const PORT = process.env.PORT || 5000;
     // Start the server
     app.listen(PORT, () => {
-      console.log(`Server is running at ${API_URL}:${PORT}`);
+      console.log(`Express Server is running at ${API_URL}:${PORT}`);
     });
 
     // Test route
     app.get("/health", (req: Request, res: Response) => {
-      res.status(200).send("Server is running...");
+      res.status(200).send("Express Server is running...");
     });
 
     // Mount routes
@@ -61,7 +61,7 @@ const expressApp = async (app: Express, retryCount = 0): Promise<void> => {
     console.log("Connected to server successfully.");
     serverCircuitBreaker.handleSuccess(); // Reset the circuit breaker on success
     isConnecting = false; // Release lock
-  } catch (error) {
+  } catch (error :any) {
     serverCircuitBreaker.handleFailure();
     console.error(
       `Retry attempt (${serverCircuitBresakerStates.failures}/${serverCircuitBresakerStates.threshold})...`
@@ -82,7 +82,7 @@ const expressApp = async (app: Express, retryCount = 0): Promise<void> => {
         );
         serverCircuitBreaker.handleSuccess();
         isConnecting = false; // Release lock
-        return; // Exit without retrying
+        throw new Error(error);
       }
     }
     // Schedule a retry after the timeout period

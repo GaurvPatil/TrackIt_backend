@@ -46,7 +46,7 @@ const connectDB = async (retryCount = 0) => {
     console.log("Connected to the database successfully.");
     dbCircuitBreaker.handleSuccess(); // Reset circuit breaker on success
     isConnecting = false; // Release lock
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to connect to the database:");
 
     dbCircuitBreaker.handleFailure(); // Increment failure count and  open the circuit
@@ -69,7 +69,7 @@ const connectDB = async (retryCount = 0) => {
         );
         dbCircuitBreaker.handleSuccess(); // Reset circuit breaker to CLOSED to avoid further retries
         isConnecting = false; // Release lock
-        return; // Exit without retrying
+        throw new Error(error);
       }
 
       // Schedule a retry after the timeout period

@@ -10,7 +10,8 @@ dotenv.config();
 const threshold =
   parseInt(process.env.GRAPHQL_CONNECTION_THRESHOLD as string, 10) || 3;
 const timeout =
-  parseInt(process.env.GRAPHQL_CONNECTION_TIMEOUT_MS as string, 10) || 60 * 1000;
+  parseInt(process.env.GRAPHQL_CONNECTION_TIMEOUT_MS as string, 10) ||
+  60 * 1000;
 const serverCircuitBreaker = new CircuitBreaker(threshold, timeout);
 const graphqlCircuitBresakerStates = serverCircuitBreaker.getState();
 let isConnecting = false;
@@ -47,7 +48,7 @@ export const graphqlConnection = async (
     console.log("Connected to the graphql server successfully.");
     serverCircuitBreaker.handleSuccess(); // Reset the circuit breaker on success
     isConnecting = false; // Release lock
-  } catch (error) {
+  } catch (error: any) {
     serverCircuitBreaker.handleFailure();
     console.error(
       `Retry attempt (${graphqlCircuitBresakerStates.failures}/${graphqlCircuitBresakerStates.threshold})...`
@@ -68,7 +69,7 @@ export const graphqlConnection = async (
         );
         serverCircuitBreaker.handleSuccess();
         isConnecting = false; // Release lock
-        return; // Exit without retrying
+        throw new Error(error);
       }
     }
     // Schedule a retry after the timeout period
