@@ -4,7 +4,7 @@
   "main": "/src/server.ts",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"tsc --watch\" \"wait-on dist dist/server.js && nodemon --watch dist dist/server.js\""
+    "start": "concurrently \"tsc --watch\" \"wait-on dist/server.js && nodemon dist/server.js\""
   },
   "dependencies": {
     "apollo-server-express": "^3.13.0",
