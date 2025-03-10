@@ -21,7 +21,7 @@ export class ErrorHandler {
   public static restApiErrorHandler(
     res: Response,
     statusCode: number = 500,
-    status: string = "Error",
+    status: string = "error",
     message: string = "An error occurred",
     data: any = null,
     error?: any
@@ -79,7 +79,7 @@ export class SuccessHandler {
 
   public static standardSuccessHandler(
     statusCode: number = 200,
-    status: string = "Ok",
+    status: string = "ok",
     message: string = "Success",
     data: any = null
   ): SuccessResponse {

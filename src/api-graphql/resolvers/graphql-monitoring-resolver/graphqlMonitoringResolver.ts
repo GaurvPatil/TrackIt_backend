@@ -7,7 +7,7 @@ const graphqlMonitoringResolver = {
   getServerStatusResponse: async (): Promise<SuccessResponse> => {
     return SuccessHandler.standardSuccessHandler(
       200,
-      "Ok",
+      "ok",
       "GraphQL Server is running smoothly.",
       null
     );

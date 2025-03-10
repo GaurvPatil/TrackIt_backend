@@ -101,7 +101,7 @@ export const createUserController = async (
     SuccessHandler.restApiSuccessHandler(
       res,
       201,
-      "Ok",
+      "ok",
       " User created successfully",
       newUser
     );
