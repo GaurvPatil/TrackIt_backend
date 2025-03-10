@@ -34,7 +34,7 @@ export class ErrorHandler {
     };
 
     if (process.env.NODE_ENV !== "production") {
-      response["error"] = error?.message ? error.message : error;
+      response["error"] =  error;
     }
 
     res.status(statusCode).json(response);
@@ -55,7 +55,7 @@ export class ErrorHandler {
     };
 
     if (process.env.NODE_ENV !== "production") {
-      response["error"] = error?.message ? error.message : error;
+      response["error"] =  error;
     }
 
     return response;
